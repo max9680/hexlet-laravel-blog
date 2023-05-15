@@ -9,8 +9,24 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <script src="{{ asset('js/app.js') }}"></script>
     </head>
+
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success" role="alert">
+        {{ $message }}
+        </div>
+    @endif
+
     <body>
         <div class="container mt-4">
+            <div>
+                <a href="{{ route('articles.index')}}">Статьи</a>
+            </div>
+            <div>
+                <a href="{{ route('articles.create')}}">Создать статью</a>
+            </div>
+            <div>
+                <a href="{{ route('about')}}">О блоге</a>
+            </div>
             <h1>@yield('header')</h1>
             <div>
                 @yield('content')

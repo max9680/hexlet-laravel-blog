@@ -25,6 +25,9 @@
             <a href="{{ route('articles.index')}}">Статьи</a>
         </div>
         <div>
+            <a href="{{ route('articles.create')}}">Создать статью</a>
+        </div>
+        <div>
             <a href="{{ route('about')}}">О блоге</a>
         </div>
     </body>
