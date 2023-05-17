@@ -28,15 +28,23 @@ class ArticleController extends Controller
         return view('article.create', compact('article'));
     }
 
-    public function store(Request $request)
+    /**
+    * Store a new article.
+    *
+    * @param  \app\Http\Requests\StoreArticleRequest $request
+    * @return Illuminate\Http\Response
+    */
+    public function store(\App\Http\Requests\StoreArticleRequest $request)
     {
+        $validated = $request->validated();
+        
         $data = $this->validate($request, [
             'name' => 'required|unique:articles',
-            'body' => 'required|min:10',
         ]);
 
         $article = new Article();
 
+        $article->fill($validated);
         $article->fill($data);
         $article->save();
 
@@ -50,17 +58,29 @@ class ArticleController extends Controller
         return view('article.edit', compact('article'));
     }
 
-    public function update(Request $request, $id)
+    public function update(\App\Http\Requests\StoreArticleRequest $request, $id)
     {
         $article = Article::findOrFail($id);
+
+        $validated = $request->validated();
+
         $data = $this->validate($request, [
             'name' => 'required|unique:articles,name,' . $article->id,
-            'body' => 'required|min:100',
         ]);
 
         $article->fill($data);
+        $article->fill($validated);
         $article->save();
         return redirect()
-            ->route('articles.index');
+            ->route('articles.index')->with('success', 'Article was updated');
+    }
+
+    public function destroy($id)
+    {
+        $article = Article::find($id);
+        if ($article) {
+            $article->delete();
+        }
+        return redirect()->route('articles.index');
     }
 }
