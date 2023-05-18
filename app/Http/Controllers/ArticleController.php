@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Article;
+use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $articles = Article::paginate();
@@ -14,13 +19,11 @@ class ArticleController extends Controller
         return view('article.index', compact('articles'));
     }
 
-    public function show($id)
-    {
-        $article = Article::findOrFail($id);
-
-        return view('article.show', compact('article'));
-    }
-
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         $article = new Article();
@@ -29,11 +32,11 @@ class ArticleController extends Controller
     }
 
     /**
-    * Store a new article.
-    *
-    * @param  \app\Http\Requests\StoreArticleRequest $request
-    * @return Illuminate\Http\Response
-    */
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StoreArticleRequest $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(\App\Http\Requests\StoreArticleRequest $request)
     {
         $validated = $request->validated();
@@ -52,12 +55,36 @@ class ArticleController extends Controller
             ->route('articles.index')->with('success', 'Article was added');
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Article  $article
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Article $article)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Article  $article
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         $article = Article::findOrFail($id);
         return view('article.edit', compact('article'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\StoreArticleRequest $request
+     * @param  \App\Models\Article  $article
+     * @return \Illuminate\Http\Response
+     */
     public function update(\App\Http\Requests\StoreArticleRequest $request, $id)
     {
         $article = Article::findOrFail($id);
@@ -75,9 +102,14 @@ class ArticleController extends Controller
             ->route('articles.index')->with('success', 'Article was updated');
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Article  $article
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Article $article)
     {
-        $article = Article::find($id);
         if ($article) {
             $article->delete();
         }
